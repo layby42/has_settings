@@ -23,7 +23,7 @@ module HasSettings  #:nodoc:
         attribute_name = args.shift || HasSettings.config[:global_settings_attribute_name]
         association_name = "_#{attribute_name}"
         
-        named_scope association_name.to_sym,
+        scope association_name.to_sym,
           :conditions => 'configurable_id IS NULL AND configurable_type IS NULL'
 
         (class << self; self; end).instance_eval do
@@ -87,7 +87,7 @@ module HasSettings  #:nodoc:
     class SettingsAccessor
       
       # Start with (almost) blank slate
-      instance_methods.each { |m| undef_method m unless m.to_s =~ /(^__|send|inspect)/}
+      instance_methods.each { |m| undef_method m unless m.to_s =~ /(^__|send|inspect|object_id)/}
       
       ##
       # Initialize new accessor proxy
