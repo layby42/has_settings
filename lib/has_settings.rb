@@ -172,7 +172,7 @@ module HasSettings  #:nodoc:
             if @owner.respond_to?(:new_record?) && @owner.new_record?
               setting = @association.build(:name => symbol_or_name.to_s, :value => value)
             else
-              setting = @association.create(:name => symbol_or_name.to_s, :value => value)
+              setting = @association.find_or_create_by_name(symbol_or_name.to_s){ |s| s.value = value }
             end
           else
             setting.update_attributes(:value => value)
