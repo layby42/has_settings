@@ -23,8 +23,7 @@ module HasSettings  #:nodoc:
         attribute_name = args.shift || HasSettings.config[:global_settings_attribute_name]
         association_name = "_#{attribute_name}"
         
-        scope association_name.to_sym,
-          :conditions => 'configurable_id IS NULL AND configurable_type IS NULL'
+        scope association_name.to_sym, where('configurable_id IS NULL AND configurable_type IS NULL')
 
         (class << self; self; end).instance_eval do
           define_method attribute_name do
@@ -192,7 +191,7 @@ module HasSettings  #:nodoc:
       end
       
       def find_setting(symbol_or_name)
-        @association.first(:conditions => ['name = ?', symbol_or_name.to_s])
+        @association.where('name = ?', symbol_or_name.to_s).first
       end
 
       def has_parent?
